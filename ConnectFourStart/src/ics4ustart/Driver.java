@@ -76,7 +76,7 @@ public class Driver {
 			}
 			
 			
-			if(horizNum == 4) {
+			if(horizNum ==  4) {
 				System.out.println(currentP + "wins");
 				done = true;
 			}
