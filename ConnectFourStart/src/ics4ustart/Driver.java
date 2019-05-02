@@ -9,25 +9,59 @@ public class Driver {
 	public static void main(String[] args) throws InterruptedException {
 
 		// Setup constants for the Board
-		final int ROWS = 9;
-		final int COLS = 9;
+		final int ROWS = 7;
+		final int COLS = 7;
 
 		// create the board
 		Board board = new Board(ROWS, COLS);
 		board.display();
 
 		boolean done = false;
-		//String value = "";
-
+		boolean doneAsking = false;
+		int numPlayers = 0;
 		int column = 0;
 		
 		CellState currentP = CellState.P1;
 		
+		Scanner in = new Scanner(System.in);
+		
+		
+		while(!doneAsking) {
+			System.out.print("How many Players? (1 or 2) :");
+			if(in.hasNextInt()) {
+				numPlayers=in.nextInt();
+				
+				if(numPlayers != 1 && numPlayers != 2) {
+					in.nextLine();
+					System.out.println("1 or 2 is expected try again.");
+				}
+				else {
+					doneAsking=true;
+				}
+				
+			}
+			else {
+				in.nextLine();
+				System.out.println("1 or 2 is expected try again.");
+			}
+		}
+		
+		in.close();
+		
 		while (!done) {
-			System.out.println(currentP +"'s turn");
+			/*	
+			if(numPlayers == 2) {
+				System.out.println(currentP +"'s turn");
+			}
+			else {
+				
+			}
+			*/
+			
 			column = getColumn() -1;
 			int currentRow = 0;
-			
+			boolean vertWin = false;
+			int emptySpots = 0;
 			
 			//placing pieces at lowest height in column
 			for(int i = ROWS -1 ; i >= 0; i--) {
@@ -45,12 +79,12 @@ public class Driver {
 				if(board.getCell(currentRow+1,column).getState() == currentP) {
 					if(board.getCell(currentRow+2,column).getState() == currentP) {
 						if(board.getCell(currentRow+3,column).getState() == currentP) {
-							System.out.println(currentP + " wins");
-							done = true;
+							vertWin = true;
 						}
 					}	
 				}
 			}
+			
 			
 			
 			//horizontal win check
@@ -73,19 +107,13 @@ public class Driver {
 						horizNum ++;
 					}
 				}
-			}
-			
-			
-			if(horizNum ==  4) {
-				System.out.println(currentP + "wins");
-				done = true;
-			}
+			}			
 			
 			
 			
 			//diagonal win check
 			//top left to bottom right
-			/*
+			
 			int diagNumTLBR = 1;
 			
 			//checking to left
@@ -99,7 +127,6 @@ public class Driver {
 			
 			//checking to right
 			for(int i = 1; i < 4; i++) {
-				System.out.println(i);
 				if( column + i < COLS && currentRow + i < ROWS) {
 					if(board.getCell(currentRow+i,column+i).getState() == currentP) {
 						diagNumTLBR ++;
@@ -107,10 +134,6 @@ public class Driver {
 				}
 			}
 			
-			if(diagNumTLBR == 4) {
-				System.out.println(currentP + "wins");
-				done = true;
-			}
 			
 			//bottom left to top right
 			
@@ -127,18 +150,14 @@ public class Driver {
 			
 			//checking to right
 			for(int i = 1; i < 4; i++) {
-				if( column - i >= 0 && currentRow - 2 - i > 0) {
-					if(board.getCell(currentRow-2-i,column+i).getState() == currentP) {
+				if( column + i < COLS && currentRow - i >= 0) {
+					if(board.getCell(currentRow-i,column+i).getState() == currentP) {
 						diagNumBLTR ++;
 					}
 				}
 			}
+						
 			
-			if(diagNumBLTR == 4) {
-				System.out.println(currentP + "wins");
-				done = true;
-			}
-			*/
 			
 			//swapping players
 			if(currentP == CellState.P1) {
@@ -151,6 +170,42 @@ public class Driver {
 			
 			
 			board.display();
+			
+			
+			
+			//win check displays
+			if(vertWin) {
+				System.out.println(currentP + " wins");
+				done = true;
+			}
+			
+			if(horizNum ==  4) {
+				System.out.println(currentP + "wins");
+				done = true;
+			}
+			
+			if(diagNumTLBR == 4) {
+				System.out.println(currentP + " wins");
+				done = true;
+			}
+			
+			if(diagNumBLTR == 4) {
+				System.out.println(currentP + " wins");
+				done = true;
+			}
+			
+			for(int i = 0; i <COLS; i++) {
+				if(board.getCell(0,i).getState() != CellState.EMPTY) {
+					emptySpots++;
+				}
+			}
+			
+			//Tie testing
+			if(emptySpots == COLS) {
+				System.out.println("Tie");
+				done = true;
+			}
+			
 		}
 	}
 
