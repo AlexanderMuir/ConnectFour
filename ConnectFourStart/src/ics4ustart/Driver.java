@@ -17,46 +17,16 @@ public class Driver {
 		board.display();
 
 		boolean done = false;
-		boolean doneAsking = false;
-		int numPlayers = 0;
 		int column = 0;
 		
 		CellState currentP = CellState.P1;
 		
-		Scanner in = new Scanner(System.in);
-		
-		
-		while(!doneAsking) {
-			System.out.print("How many Players? (1 or 2) :");
-			if(in.hasNextInt()) {
-				numPlayers=in.nextInt();
 				
-				if(numPlayers != 1 && numPlayers != 2) {
-					in.nextLine();
-					System.out.println("1 or 2 is expected try again.");
-				}
-				else {
-					doneAsking=true;
-				}
-				
-			}
-			else {
-				in.nextLine();
-				System.out.println("1 or 2 is expected try again.");
-			}
-		}
-		
-		in.close();
-		
 		while (!done) {
-			/*	
-			if(numPlayers == 2) {
-				System.out.println(currentP +"'s turn");
-			}
-			else {
 				
-			}
-			*/
+			
+			System.out.println(currentP +"'s turn");
+						
 			
 			column = getColumn() -1;
 			int currentRow = 0;
@@ -214,14 +184,13 @@ public class Driver {
 		int column = 0;
 		Scanner in = new Scanner(System.in);
 		
-		
 		while(!valid) {
 			System.out.print("Which Column (1-7) :");
 			if(in.hasNextInt()) {
 				column=in.nextInt();
 				if(column<1 || column >7) {
 					in.nextLine();
-					System.out.println("An integer in between 1-7 is expected try again.");
+					System.out.println("An integer in between 1-7 is expected, try again.");
 				}
 				else if(column>=1 && column <=7){
 					valid=true;
@@ -229,7 +198,7 @@ public class Driver {
 			}
 			else {
 				in.nextLine();
-				System.out.println("An integer in between 1-7 is expected try again.");
+				System.out.println("An integer in between 1-7 is expected, try again.");
 			}
 		}
 		return column;
